@@ -253,3 +253,10 @@ p {
   border: 1px solid #ccc;
 }
 
+.modal-buttons.column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+

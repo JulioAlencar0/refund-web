@@ -7,24 +7,25 @@ import hotel from "./assets/hotel.svg";
 import service from "./assets/service.svg";
 import other from "./assets/other.svg";
 import empty from "./assets/empty.svg";
+import successIcon from "./assets/success.svg";
+import alertIcon from "./assets/alert.svg";
 
 function App() {
   const [refunds, setRefunds] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [viewModal, setViewModal] = useState(false);
+  const [successModal, setSuccessModal] = useState(false);
+  const [confirmModal, setConfirmModal] = useState(false);
   const [selectedRefund, setSelectedRefund] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const itemsPerPage = 6;
-  const totalPages = Math.ceil(refunds.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentRefunds = refunds.slice(startIndex, endIndex);
 
-  //estados do modal de criação
+  // estados do modal de criação
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
-  const [value, setValue] = useState("0,00");
+  const [value, setValue] = useState("");
 
   const icons = {
     Alimentação: food,
@@ -34,8 +35,23 @@ function App() {
     Outros: other,
   };
 
+  // filtra as solicitações pelo nome
+  const filteredRefunds = refunds.filter((r) =>
+    r.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const totalPages = Math.ceil(filteredRefunds.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentRefunds = filteredRefunds.slice(startIndex, endIndex);
+
   const addRefund = () => {
-    if (!name || !value) return;
+    // validação
+    if (!name.trim() || !category.trim() || !value.trim()) {
+      alert("Preencha todos os campos antes de adicionar a solicitação!");
+      return;
+    }
+
     const newRefund = {
       id: Date.now(),
       name,
@@ -43,11 +59,13 @@ function App() {
       value: parseFloat(value),
       icon: icons[category],
     };
+
     setRefunds([...refunds, newRefund]);
     setShowModal(false);
+    setSuccessModal(true);
     setName("");
     setCategory("");
-    setValue("0,00");
+    setValue("");
   };
 
   const openRefundDetails = (refund) => {
@@ -55,8 +73,14 @@ function App() {
     setViewModal(true);
   };
 
+  const openConfirmModal = (refund) => {
+    setSelectedRefund(refund);
+    setConfirmModal(true);
+  };
+
   const deleteRefund = () => {
     setRefunds(refunds.filter((r) => r.id !== selectedRefund.id));
+    setConfirmModal(false);
     setViewModal(false);
     setSelectedRefund(null);
   };
@@ -73,7 +97,16 @@ function App() {
 
       <div className="content">
         <h1>Solicitações</h1>
-        <input className="input" type="text" placeholder="Pesquisar pelo nome" />
+        <input
+          className="input"
+          type="text"
+          placeholder="Pesquisar pelo nome"
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setCurrentPage(1); // reinicia a página ao pesquisar
+          }}
+        />
         <button className="search">
           <img src={search} alt="buscar" />
         </button>
@@ -120,7 +153,9 @@ function App() {
                 Página {currentPage} de {totalPages}
               </span>
               <button
-                onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(p + 1, totalPages))
+                }
                 disabled={currentPage === totalPages}
               >
                 →
@@ -170,7 +205,7 @@ function App() {
               </div>
             </div>
 
-            <div className="modal-buttons">
+            <div className="modal-buttons column">
               <button onClick={addRefund}>Adicionar</button>
               <button onClick={() => setShowModal(false)}>Cancelar</button>
             </div>
@@ -178,11 +213,42 @@ function App() {
         </div>
       )}
 
-    
+      {/* MODAL DE SUCESSO */}
+      {successModal && (
+        <div className="modal-backdrop">
+          <div className="modal" style={{ backgroundColor: "#f7f7f7" }}>
+            <img src={successIcon} alt="Sucesso" style={{ width: "60px" }} />
+            <h2>Solicitação enviada com sucesso!</h2>
+            <p>
+              Agora é apenas aguardar. Sua solicitação será analisada e em breve
+              o setor financeiro irá entrar em contato com você.
+            </p>
+            <div className="modal-buttons column">
+              <button
+                onClick={() => {
+                  setSuccessModal(false);
+                  setShowModal(true);
+                }}
+              >
+                Nova solicitação
+              </button>
+              <button
+                onClick={() => {
+                  setSuccessModal(false);
+                }}
+              >
+                Ver solicitações
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL DE DETALHES */}
       {viewModal && selectedRefund && (
         <div className="modal-backdrop">
           <div className="modal">
-            <h2>Solicitação de Reembolso</h2>
+            <h2>Detalhes da Solicitação</h2>
             <h5>Dados da despesa para reembolso.</h5>
 
             <p>NOME DA SOLICITAÇÃO</p>
@@ -208,11 +274,31 @@ function App() {
               </div>
             </div>
 
-            <div className="modal-buttons">
-              <button onClick={deleteRefund} className="delete">
+            <div className="modal-buttons column">
+              <button
+                className="delete"
+                onClick={() => openConfirmModal(selectedRefund)}
+              >
                 Excluir solicitação
               </button>
               <button onClick={() => setViewModal(false)}>Fechar</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL DE CONFIRMAÇÃO */}
+      {confirmModal && selectedRefund && (
+        <div className="modal-backdrop">
+          <div className="modal" style={{ backgroundColor: "#f7f7f7" }}>
+            <img src={alertIcon} alt="Atenção" style={{ width: "60px" }} />
+            <h2>Confirmação de exclusão</h2>
+            <p>Tem certeza de que deseja excluir esta solicitação?</p>
+            <div className="modal-buttons column">
+              <button onClick={deleteRefund} className="delete">
+                Excluir
+              </button>
+              <button onClick={() => setConfirmModal(false)}>Cancelar</button>
             </div>
           </div>
         </div>
