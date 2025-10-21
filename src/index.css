@@ -3,10 +3,11 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  
+  font-family: 'Poppins', sans-serif;
 }
+
 body {
-  font-family: poppins, sans-serif;
+  
   background-color: #E4ECE9;
   color: #333;
 }
@@ -81,4 +82,45 @@ body {
   cursor: pointer;
   position: absolute;
   margin-left: 12px;
+}
+
+.results {
+  margin-top: 24px;
+}
+
+.refund-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+}
+
+.refund-item .left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #E4ECE9;
+  padding: 6px;
+}
+
+.name {
+  font-weight: 600;
+  font-size: 15px;
+  color: #000;
+}
+
+.category {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.value {
+  font-weight: 600;
+  color: #000;
 }
