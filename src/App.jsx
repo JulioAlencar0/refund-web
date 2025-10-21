@@ -22,7 +22,6 @@ function App() {
 
   const itemsPerPage = 6;
 
-  // estados do modal de criação
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [value, setValue] = useState("");
@@ -35,7 +34,6 @@ function App() {
     Outros: other,
   };
 
-  // filtra as solicitações pelo nome
   const filteredRefunds = refunds.filter((r) =>
     r.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -46,7 +44,6 @@ function App() {
   const currentRefunds = filteredRefunds.slice(startIndex, endIndex);
 
   const addRefund = () => {
-    // validação
     if (!name.trim() || !category.trim() || !value.trim()) {
       alert("Preencha todos os campos antes de adicionar a solicitação!");
       return;
@@ -104,7 +101,7 @@ function App() {
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value);
-            setCurrentPage(1); // reinicia a página ao pesquisar
+            setCurrentPage(1);
           }}
         />
         <button className="search">
@@ -165,7 +162,6 @@ function App() {
         </div>
       </div>
 
-      {/* MODAL NOVA SOLICITAÇÃO */}
       {showModal && (
         <div className="modal-backdrop">
           <div className="modal">
@@ -213,12 +209,14 @@ function App() {
         </div>
       )}
 
-      {/* MODAL DE SUCESSO */}
       {successModal && (
         <div className="modal-backdrop">
-          <div className="modal" style={{ backgroundColor: "#f7f7f7" }}>
-            <img src={successIcon} alt="Sucesso" style={{ width: "60px" }} />
-            <h2>Solicitação enviada com sucesso!</h2>
+          <div
+            className="modal small-modal"
+            style={{ backgroundColor: "#f7f7f7" }}
+          >
+            <img src={successIcon} alt="Sucesso" style={{ width: "50px", marginLeft: "175px", marginBottom: "12px" }} />
+            <h3>Solicitação enviada com sucesso!</h3>
             <p>
               Agora é apenas aguardar. Sua solicitação será analisada e em breve
               o setor financeiro irá entrar em contato com você.
@@ -232,11 +230,7 @@ function App() {
               >
                 Nova solicitação
               </button>
-              <button
-                onClick={() => {
-                  setSuccessModal(false);
-                }}
-              >
+              <button onClick={() => setSuccessModal(false)}>
                 Ver solicitações
               </button>
             </div>
@@ -287,12 +281,14 @@ function App() {
         </div>
       )}
 
-      {/* MODAL DE CONFIRMAÇÃO */}
       {confirmModal && selectedRefund && (
         <div className="modal-backdrop">
-          <div className="modal" style={{ backgroundColor: "#f7f7f7" }}>
-            <img src={alertIcon} alt="Atenção" style={{ width: "60px" }} />
-            <h2>Confirmação de exclusão</h2>
+          <div
+            className="modal small-modal"
+            style={{ backgroundColor: "#f7f7f7" }}
+          >
+            <img src={alertIcon} alt="Atenção" style={{ width: "100px", marginLeft: "155px", marginBottom: "12px" }} />
+            <h3>Confirmação de exclusão</h3>
             <p>Tem certeza de que deseja excluir esta solicitação?</p>
             <div className="modal-buttons column">
               <button onClick={deleteRefund} className="delete">

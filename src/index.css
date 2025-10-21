@@ -259,4 +259,17 @@ p {
   gap: 10px;
 }
 
+.modal.small-modal {
+  width: 450px;
+  height: 300px;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.modal-buttons.column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
