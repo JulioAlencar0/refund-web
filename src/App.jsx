@@ -1,7 +1,7 @@
 import { useState } from "react";
 import logo from "./assets/logo.svg";
 import search from "./assets/search.svg";
-import food from "./assets/food.svg"; 
+import food from "./assets/food.svg";
 import car from "./assets/car.svg";
 import hotel from "./assets/hotel.svg";
 import service from "./assets/service.svg";
@@ -19,21 +19,21 @@ function App() {
   const endIndex = startIndex + itemsPerPage;
   const currentRefunds = refunds.slice(startIndex, endIndex);
 
-  // Estados do formulário
+  //estados do modal
   const [name, setName] = useState("");
-  const [category, setCategory] = useState("Selecione");
-  const [value, setValue] = useState("");
+  const [category, setCategory] = useState("");
+  const [value, setValue] = useState("0,00");
 
   const icons = {
-    "Alimentação": food,
-    "Hospedagem": hotel,
-    "Transporte": car,
-    "Serviços": service,
-    "Outros": other
+    Alimentação: food,
+    Hospedagem: hotel,
+    Transporte: car,
+    Serviços: service,
+    Outros: other,
   };
 
   const addRefund = () => {
-    if (!name || !value) return; // validação simples
+    if (!name || !value) return; 
     const newRefund = {
       id: Date.now(),
       name,
@@ -44,8 +44,8 @@ function App() {
     setRefunds([...refunds, newRefund]);
     setShowModal(false);
     setName("");
-    setCategory("Alimentação");
-    setValue("");
+    setCategory("");
+    setValue("0,00");
   };
 
   return (
@@ -53,7 +53,9 @@ function App() {
       <div className="header">
         <img src={logo} alt="Logo" />
         <button className="btn1">Solicitações de reembolso</button>
-        <button className="btn2" onClick={() => setShowModal(true)}>Nova solicitação</button>
+        <button className="btn2" onClick={() => setShowModal(true)}>
+          Nova solicitação
+        </button>
       </div>
 
       <div className="content">
@@ -70,9 +72,9 @@ function App() {
         <div className="results">
           {currentRefunds.length === 0 ? (
             <div className="empty-state">
-                <img src={empty} alt="" />
-              <p> Nenhuma solicitação encontrada!</p>
-              <p>Adicione uma nova solicitação para começar.</p>
+              <img src={empty} alt="" />
+              <p className="emptyText"> Nenhuma solicitação encontrada!</p>
+              <p className="emptyText"> Adicione uma nova solicitação para começar.</p>
             </div>
           ) : (
             currentRefunds.map((item) => (
@@ -93,15 +95,19 @@ function App() {
 
           {totalPages > 1 && (
             <div className="pagination">
-              <button 
+              <button
                 onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
                 disabled={currentPage === 1}
               >
                 ←
               </button>
-              <span>Página {currentPage} de {totalPages}</span>
-              <button 
-                onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+              <span>
+                Página {currentPage} de {totalPages}
+              </span>
+              <button
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(p + 1, totalPages))
+                }
                 disabled={currentPage === totalPages}
               >
                 →
@@ -117,30 +123,43 @@ function App() {
           <div className="modal">
             <h2>Nova Solicitação de Reembolso</h2>
             <h5>Dados da despesa para solicitar reembolso.</h5>
-              <p>Nome da solicitação</p>
-            <input 
-              type="text" 
-              value={name} 
+            <p>NOME DA SOLICITAÇÃO</p>
+            <input
+              type="text"
+              value={name}
               onChange={(e) => setName(e.target.value)}
             />
-            <p>Categoria</p>
-            <select value={category} placeholder="Selecione" onChange={(e) => setCategory(e.target.value)}>
-              <option>Selecione</option>
-              <option>Alimentação</option>
-              <option>Hospedagem</option>
-              <option>Transporte</option>
-              <option>Serviços</option>
-              <option>Outros</option>
-            </select>
-            <p>Valor</p>
-            <input 
-              type="number" 
-              value={value} 
-              onChange={(e) => setValue(e.target.value)}
-            />
+            
+            <div className="row">
+              <div className="field">
+                <p>CATEGORIA</p>
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                >
+                  <option value="">Selecione</option> 
+                  <option value="Alimentação">Alimentação</option>
+                  <option value="Hospedagem">Hospedagem</option>
+                  <option value="Transporte">Transporte</option>
+                  <option value="Serviços">Serviços</option>
+                  <option value="Outros">Outros</option>
+                </select>
+              </div>
+
+              <div className="field">
+                <p>VALOR</p>
+                <input
+                  type="number"
+                  placeholder="0,00"
+                  value={value}
+                  onChange={(e) => setValue(e.target.value)}
+                />
+              </div>
+            </div>
+
             <div className="modal-buttons">
-              <button onClick={() => setShowModal(false)}>Cancelar</button>
               <button onClick={addRefund}>Adicionar</button>
+              <button onClick={() => setShowModal(false)}>Cancelar</button>
             </div>
           </div>
         </div>
