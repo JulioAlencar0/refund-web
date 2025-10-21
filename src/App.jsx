@@ -12,6 +12,8 @@ function App() {
   const [refunds, setRefunds] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
+  const [viewModal, setViewModal] = useState(false);
+  const [selectedRefund, setSelectedRefund] = useState(null);
 
   const itemsPerPage = 6;
   const totalPages = Math.ceil(refunds.length / itemsPerPage);
@@ -19,7 +21,7 @@ function App() {
   const endIndex = startIndex + itemsPerPage;
   const currentRefunds = refunds.slice(startIndex, endIndex);
 
-  //estados do modal
+  //estados do modal de criação
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [value, setValue] = useState("0,00");
@@ -33,7 +35,7 @@ function App() {
   };
 
   const addRefund = () => {
-    if (!name || !value) return; 
+    if (!name || !value) return;
     const newRefund = {
       id: Date.now(),
       name,
@@ -48,6 +50,17 @@ function App() {
     setValue("0,00");
   };
 
+  const openRefundDetails = (refund) => {
+    setSelectedRefund(refund);
+    setViewModal(true);
+  };
+
+  const deleteRefund = () => {
+    setRefunds(refunds.filter((r) => r.id !== selectedRefund.id));
+    setViewModal(false);
+    setSelectedRefund(null);
+  };
+
   return (
     <div id="container">
       <div className="header">
@@ -60,11 +73,7 @@ function App() {
 
       <div className="content">
         <h1>Solicitações</h1>
-        <input
-          className="input"
-          type="text"
-          placeholder="Pesquisar pelo nome"
-        />
+        <input className="input" type="text" placeholder="Pesquisar pelo nome" />
         <button className="search">
           <img src={search} alt="buscar" />
         </button>
@@ -73,12 +82,18 @@ function App() {
           {currentRefunds.length === 0 ? (
             <div className="empty-state">
               <img src={empty} alt="" />
-              <p className="emptyText"> Nenhuma solicitação encontrada!</p>
-              <p className="emptyText"> Adicione uma nova solicitação para começar.</p>
+              <p className="emptyText">Nenhuma solicitação encontrada!</p>
+              <p className="emptyText">
+                Adicione uma nova solicitação para começar.
+              </p>
             </div>
           ) : (
             currentRefunds.map((item) => (
-              <div key={item.id} className="refund-item">
+              <div
+                key={item.id}
+                className="refund-item"
+                onClick={() => openRefundDetails(item)}
+              >
                 <div className="left">
                   <img src={item.icon} alt="" className="icon" />
                   <div>
@@ -105,9 +120,7 @@ function App() {
                 Página {currentPage} de {totalPages}
               </span>
               <button
-                onClick={() =>
-                  setCurrentPage((p) => Math.min(p + 1, totalPages))
-                }
+                onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
                 disabled={currentPage === totalPages}
               >
                 →
@@ -117,7 +130,7 @@ function App() {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* MODAL NOVA SOLICITAÇÃO */}
       {showModal && (
         <div className="modal-backdrop">
           <div className="modal">
@@ -129,7 +142,7 @@ function App() {
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-            
+
             <div className="row">
               <div className="field">
                 <p>CATEGORIA</p>
@@ -137,7 +150,7 @@ function App() {
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                 >
-                  <option value="">Selecione</option> 
+                  <option value="">Selecione</option>
                   <option value="Alimentação">Alimentação</option>
                   <option value="Hospedagem">Hospedagem</option>
                   <option value="Transporte">Transporte</option>
@@ -160,6 +173,46 @@ function App() {
             <div className="modal-buttons">
               <button onClick={addRefund}>Adicionar</button>
               <button onClick={() => setShowModal(false)}>Cancelar</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+    
+      {viewModal && selectedRefund && (
+        <div className="modal-backdrop">
+          <div className="modal">
+            <h2>Solicitação de Reembolso</h2>
+            <h5>Dados da despesa para reembolso.</h5>
+
+            <p>NOME DA SOLICITAÇÃO</p>
+            <input type="text" value={selectedRefund.name} disabled />
+
+            <div className="row">
+              <div className="field">
+                <p>CATEGORIA</p>
+                <select value={selectedRefund.category} disabled>
+                  <option>{selectedRefund.category}</option>
+                </select>
+              </div>
+
+              <div className="field">
+                <p>VALOR</p>
+                <input
+                  type="text"
+                  value={`R$ ${selectedRefund.value
+                    .toFixed(2)
+                    .replace(".", ",")}`}
+                  disabled
+                />
+              </div>
+            </div>
+
+            <div className="modal-buttons">
+              <button onClick={deleteRefund} className="delete">
+                Excluir solicitação
+              </button>
+              <button onClick={() => setViewModal(false)}>Fechar</button>
             </div>
           </div>
         </div>

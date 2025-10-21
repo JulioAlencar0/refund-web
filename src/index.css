@@ -121,6 +121,7 @@ body {
 }
 
 .value {
+  font-size: 15px;
   font-weight: 500;
   color: #000;
 }
@@ -204,6 +205,7 @@ p {
   border-radius: 6px;
   border: 1px solid #ccc;
   margin-bottom: 16px;
+  outline: none;
   
 }
 
@@ -221,14 +223,14 @@ p {
   
 }
 
-.modal-buttons button:first-child {
+.modal-buttons button:last-child {
   background-color: #dadada;
   color: #000;
   justify-content: center;
   align-items: center;
 }
 
-.modal-buttons button:last-child {
+.modal-buttons button:first-child {
   background-color: #1F8459;
   color: #fff;
 }
