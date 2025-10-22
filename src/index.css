@@ -128,7 +128,22 @@ body {
   color: #000;
 }
 
+.cloud-input{
+  padding: 10px 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 430px;
+}
 
+.cloud-btn{
+  padding: 9px 10px;
+  background-Color: #1F8459;
+  color: #fff;
+  border-Radius: 8px;
+  cursor: pointer;
+  position: absolute;
+  margin-left: -9px;
+}
 .empty-state {
   display: flex;
   flex-direction: column;

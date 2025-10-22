@@ -11,6 +11,7 @@ import successIcon from "./assets/success.svg";
 import alertIcon from "./assets/alert.svg";
 import leftArrow from "./assets/arrowLeft.svg";
 import rightArrow from "./assets/arrowRight.svg";
+import cloud from "./assets/cloud.svg";
 
 function App() {
   const [refunds, setRefunds] = useState([]);
@@ -21,6 +22,13 @@ function App() {
   const [confirmModal, setConfirmModal] = useState(false);
   const [selectedRefund, setSelectedRefund] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [fileName, setFileName] = useState("");
+
+  const handleFileChange = (event) => {
+    if (event.target.files.length > 0) {
+      setFileName(event.target.files[0].name);
+    }
+  };
 
   const itemsPerPage = 6;
 
@@ -46,8 +54,8 @@ function App() {
   const currentRefunds = filteredRefunds.slice(startIndex, endIndex);
 
   const addRefund = () => {
-    if (!name.trim() || !category.trim() || !value.trim()) {
-      alert("Preencha todos os campos antes de adicionar a solicitação!");
+    if (!name.trim() || !category.trim() || !value.trim() || !fileName.trim()) {
+      alert("Preencha todos os campos e o comprovante antes de adicionar a solicitação!");
       return;
     }
 
@@ -65,7 +73,18 @@ function App() {
     setName("");
     setCategory("");
     setValue("");
+    setFileName("");
   };
+
+  // Função para abrir o modal e zerar os campos
+const openNewRefundModal = () => {
+  setName("");
+  setCategory("");
+  setValue("");
+  setFileName("");
+  setShowModal(true);
+};
+
 
   const openRefundDetails = (refund) => {
     setSelectedRefund(refund);
@@ -89,7 +108,7 @@ function App() {
       <div className="header">
         <img src={logo} alt="Logo" />
         <button className="btn1">Solicitações de reembolso</button>
-        <button className="btn2" onClick={() => setShowModal(true)}>
+        <button className="btn2" onClick={openNewRefundModal}>
           Nova solicitação
         </button>
       </div>
@@ -202,10 +221,29 @@ function App() {
                 />
               </div>
             </div>
+          <div>
+            <p>COMPROVANTE</p>
+              <input className="cloud-input"
+                type="text"
+                value={fileName}
+                placeholder="Nome do arquivo.pdf"
+                disabled
+              />
+                <label className="cloud-btn">
+                  <img src={cloud} alt="" />
+                  <input type="file" hidden onChange={handleFileChange} />
+                </label>
+            </div>
 
             <div className="modal-buttons column">
               <button onClick={addRefund}>Adicionar</button>
-              <button onClick={() => setShowModal(false)}>Cancelar</button>
+              <button onClick={() => {
+                setShowModal(false);
+                setName("");
+                setCategory("");
+                setValue("");
+                setFileName("");
+              }} >Cancelar</button>
             </div>
           </div>
         </div>
