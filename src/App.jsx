@@ -9,6 +9,8 @@ import other from "./assets/other.svg";
 import empty from "./assets/empty.svg";
 import successIcon from "./assets/success.svg";
 import alertIcon from "./assets/alert.svg";
+import leftArrow from "./assets/arrowLeft.svg";
+import rightArrow from "./assets/arrowRight.svg";
 
 function App() {
   const [refunds, setRefunds] = useState([]);
@@ -138,16 +140,16 @@ function App() {
             ))
           )}
 
-          {totalPages > 1 && (
+              {totalPages > 1 && (
             <div className="pagination">
               <button
                 onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
                 disabled={currentPage === 1}
               >
-                ←
+                <img src={leftArrow} alt="" />
               </button>
               <span>
-                Página {currentPage} de {totalPages}
+                {currentPage} / {totalPages}
               </span>
               <button
                 onClick={() =>
@@ -155,10 +157,10 @@ function App() {
                 }
                 disabled={currentPage === totalPages}
               >
-                →
+                <img src={rightArrow} alt="" />
               </button>
             </div>
-          )}
+              )}
         </div>
       </div>
 

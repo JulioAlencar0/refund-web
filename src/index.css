@@ -46,11 +46,12 @@ body {
 
 .content{
   width: 1028px;
-  height: 584px;
-  padding: 40px 50px;
+  height: 610px;
+  max-height: 610px;
+  padding: 40px 50px 60px;
   background-color: #fff;
   position: absolute;
-  margin-top: 128px;
+  margin-top: 100px;
   margin-left: 250px;
   border-radius: 16px;
 }
@@ -86,13 +87,14 @@ body {
 
 .results {
   margin-top: 24px;
+  cursor: pointer;
 }
 
 .refund-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 0;
+  padding: 3px 0;
 }
 
 .refund-item .left {
@@ -141,15 +143,15 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 12px;
-  margin-top: 20px;
+  gap: 8px;
 }
 
 .pagination button {
+  display: flex;
   padding: 6px 12px;
-  border: 1px solid #1F8459;
+  border: 1px solid ;
   border-radius: 6px;
-  background-color: #fff;
+  background-color: #1F8459;
   color: #1F8459;
   cursor: pointer;
 }
