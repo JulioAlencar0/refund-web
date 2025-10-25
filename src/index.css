@@ -144,6 +144,28 @@ body {
   position: absolute;
   margin-left: -9px;
 }
+
+.boxReceipt{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.cloud2{
+  margin-right: 5px;
+  margin-bottom: -3px;
+}
+.receipt-btn{
+  margin-bottom: 16px;
+  margin-top: 10px;
+  font-weight: 600;
+  background-color: #fff;
+  color: #1F8459;
+  cursor: pointer;
+  font-size: 14px;
+  border: none;
+}
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -237,7 +259,7 @@ p {
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  
+  font-weight: 500;
 }
 
 .modal-buttons button:last-child {
@@ -283,10 +305,3 @@ p {
   border-radius: 12px;
   text-align: center;
 }
-
-.modal-buttons.column {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import logo from "./assets/logo.svg";
 import search from "./assets/search.svg";
 import food from "./assets/food.svg";
@@ -12,6 +12,7 @@ import alertIcon from "./assets/alert.svg";
 import leftArrow from "./assets/arrowLeft.svg";
 import rightArrow from "./assets/arrowRight.svg";
 import cloud from "./assets/cloud.svg";
+import cloud2 from "./assets/cloud2.svg";
 
 function App() {
   const [refunds, setRefunds] = useState([]);
@@ -23,15 +24,9 @@ function App() {
   const [selectedRefund, setSelectedRefund] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [fileName, setFileName] = useState("");
-
-  const handleFileChange = (event) => {
-    if (event.target.files.length > 0) {
-      setFileName(event.target.files[0].name);
-    }
-  };
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const itemsPerPage = 6;
-
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [value, setValue] = useState("");
@@ -42,6 +37,14 @@ function App() {
     Transporte: car,
     Serviços: service,
     Outros: other,
+  };
+
+  const handleFileChange = (event) => {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      setFileName(file.name);
+      setSelectedFile(file);
+    }
   };
 
   const filteredRefunds = refunds.filter((r) =>
@@ -65,6 +68,7 @@ function App() {
       category,
       value: parseFloat(value),
       icon: icons[category],
+      receiptUrl: selectedFile ? URL.createObjectURL(selectedFile) : null,
     };
 
     setRefunds([...refunds, newRefund]);
@@ -74,17 +78,17 @@ function App() {
     setCategory("");
     setValue("");
     setFileName("");
+    setSelectedFile(null);
   };
 
-  // Função para abrir o modal e zerar os campos
-const openNewRefundModal = () => {
-  setName("");
-  setCategory("");
-  setValue("");
-  setFileName("");
-  setShowModal(true);
-};
-
+  const openNewRefundModal = () => {
+    setName("");
+    setCategory("");
+    setValue("");
+    setFileName("");
+    setSelectedFile(null);
+    setShowModal(true);
+  };
 
   const openRefundDetails = (refund) => {
     setSelectedRefund(refund);
@@ -102,6 +106,15 @@ const openNewRefundModal = () => {
     setViewModal(false);
     setSelectedRefund(null);
   };
+
+  // Libera a memória dos arquivos antigos
+  useEffect(() => {
+    return () => {
+      refunds.forEach((r) => {
+        if (r.receiptUrl) URL.revokeObjectURL(r.receiptUrl);
+      });
+    };
+  }, [refunds]);
 
   return (
     <div id="container">
@@ -159,7 +172,7 @@ const openNewRefundModal = () => {
             ))
           )}
 
-              {totalPages > 1 && (
+          {totalPages > 1 && (
             <div className="pagination">
               <button
                 onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
@@ -179,10 +192,11 @@ const openNewRefundModal = () => {
                 <img src={rightArrow} alt="" />
               </button>
             </div>
-              )}
+          )}
         </div>
       </div>
 
+      {/* MODAL DE NOVA SOLICITAÇÃO */}
       {showModal && (
         <div className="modal-backdrop">
           <div className="modal">
@@ -221,41 +235,50 @@ const openNewRefundModal = () => {
                 />
               </div>
             </div>
-          <div>
-            <p>COMPROVANTE</p>
-              <input className="cloud-input"
+
+            <div>
+              <p>COMPROVANTE</p>
+              <input
+                className="cloud-input"
                 type="text"
                 value={fileName}
                 placeholder="Nome do arquivo.pdf"
                 disabled
               />
-                <label className="cloud-btn">
-                  <img src={cloud} alt="" />
-                  <input type="file" hidden onChange={handleFileChange} />
-                </label>
+              <label className="cloud-btn">
+                <img src={cloud} alt="" />
+                <input type="file" hidden onChange={handleFileChange} />
+              </label>
             </div>
 
             <div className="modal-buttons column">
               <button onClick={addRefund}>Adicionar</button>
-              <button onClick={() => {
-                setShowModal(false);
-                setName("");
-                setCategory("");
-                setValue("");
-                setFileName("");
-              }} >Cancelar</button>
+              <button
+                onClick={() => {
+                  setShowModal(false);
+                  setName("");
+                  setCategory("");
+                  setValue("");
+                  setFileName("");
+                  setSelectedFile(null);
+                }}
+              >
+                Cancelar
+              </button>
             </div>
           </div>
         </div>
       )}
 
+      {/* MODAL DE SUCESSO */}
       {successModal && (
         <div className="modal-backdrop">
-          <div
-            className="modal small-modal"
-            style={{ backgroundColor: "#f7f7f7" }}
-          >
-            <img src={successIcon} alt="Sucesso" style={{ width: "50px", marginLeft: "175px", marginBottom: "12px" }} />
+          <div className="modal small-modal" style={{ backgroundColor: "#f7f7f7" }}>
+            <img
+              src={successIcon}
+              alt="Sucesso"
+              style={{ width: "50px", marginLeft: "175px", marginBottom: "12px" }}
+            />
             <h3>Solicitação enviada com sucesso!</h3>
             <p>
               Agora é apenas aguardar. Sua solicitação será analisada e em breve
@@ -308,6 +331,22 @@ const openNewRefundModal = () => {
               </div>
             </div>
 
+            <div className="boxReceipt">
+              <button
+                className="receipt-btn"
+                onClick={() => {
+                  if (selectedRefund.receiptUrl) {
+                    window.open(selectedRefund.receiptUrl, "_blank");
+                  } else {
+                    alert("Nenhum comprovante disponível!");
+                  }
+                }}
+              >
+                <img className="cloud2" src={cloud2} alt="" />
+                Abrir comprovante
+              </button>
+            </div>
+
             <div className="modal-buttons column">
               <button
                 className="delete"
@@ -321,13 +360,15 @@ const openNewRefundModal = () => {
         </div>
       )}
 
+      {/* MODAL DE CONFIRMAÇÃO */}
       {confirmModal && selectedRefund && (
         <div className="modal-backdrop">
-          <div
-            className="modal small-modal"
-            style={{ backgroundColor: "#f7f7f7" }}
-          >
-            <img src={alertIcon} alt="Atenção" style={{ width: "100px", marginLeft: "155px", marginBottom: "12px" }} />
+          <div className="modal small-modal" style={{ backgroundColor: "#f7f7f7" }}>
+            <img
+              src={alertIcon}
+              alt="Atenção"
+              style={{ width: "100px", marginLeft: "155px", marginBottom: "12px" }}
+            />
             <h3>Confirmação de exclusão</h3>
             <p>Tem certeza de que deseja excluir esta solicitação?</p>
             <div className="modal-buttons column">
