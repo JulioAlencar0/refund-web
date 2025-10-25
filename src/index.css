@@ -24,7 +24,8 @@ body {
   padding: 0 80px;
   margin-top: 25px;
 }
-.btn1{
+
+.btn1 {
   margin-left: auto;
   margin-right: 15px;
   padding: 10px 20px;
@@ -32,9 +33,10 @@ body {
   color: #1F8459;
   cursor: pointer;
   font-size: 16px;
-  border: none
+  border: none;
 }
-.btn2{
+
+.btn2 {
   padding: 10px 20px;
   background-color: #1F8459;
   color: #fff;
