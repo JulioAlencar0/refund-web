@@ -68,16 +68,14 @@ Foi desenvolvida com **Node.js + Express (API)** e **React Native (Expo)**, inte
 git clone https://github.com/seuusuario/refund-system.git
 cd refund-system
 
+```
 
-👨‍💻 Autor
-
-Desenvolvido por Júlio César
+Desenvolvido por Júlio César👨‍💻
 
 💚 Estudante de Análise e Desenvolvimento de Sistemas
 🚀 Sonhando alto e construindo o futuro com código.
 
 📧 Email: julioc.alencar30@gmail.com
-
 🌍 LinkedIn: linkedin.com/in/juliocalencar
 
 🧾 Licença
