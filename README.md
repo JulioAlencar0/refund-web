@@ -1,74 +1,69 @@
 
 <img width="2880" height="1620" alt="Thumbnail" src="https://github.com/user-attachments/assets/8e4fc2c8-f2a0-4326-9ccd-8fea5dd64717" />
 
+# 💰 Sistema de Reembolso Web
 
-# 💸 Sistema de Reembolso - Refund System
-
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)
-![React Native](https://img.shields.io/badge/React%20Native-61DAFB?style=for-the-badge&logo=react&logoColor=black)
-![Expo](https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=expo&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
-![Axios](https://img.shields.io/badge/Axios-671ddf?style=for-the-badge)
-
----
-
-## 📖 Descrição
-
-O **Sistema de Reembolso (Refund System)** é uma aplicação completa que permite criar, visualizar e gerenciar solicitações de reembolso corporativo.  
-Foi desenvolvida com **Node.js + Express (API)** e **React Native (Expo)**, integrando upload de comprovantes e listagem dinâmica.
+Uma aplicação **web** desenvolvida para gerenciar solicitações de reembolso de forma simples, rápida e eficiente.  
+O sistema se comunica com a **API REST Node.js** e permite **visualizar, cadastrar, editar e excluir solicitações**, com upload de comprovantes e categorização.
 
 ---
 
 ## 🚀 Tecnologias Utilizadas
 
-### 🖥️ Backend (API)
-- Node.js
-- Express
-- PostgreSQL / SQLite
-- Sequelize ORM
-- Cors
-- Nodemon
+### 🖥️ **Frontend**
+- ⚛️ **React.js** — interface moderna e reativa  
+- 🌐 **Axios** — comunicação com a API  
+- 🧭 **React Router DOM** — navegação entre páginas  
+- 📸 **FileReader API** — upload e preview de comprovantes  
 
-### 📱 Frontend Mobile
-- React Native (Expo)
-- TypeScript
-- Axios
-- DropDownPicker
-- Expo DocumentPicker
-- Expo Sharing
-- Expo Image
+### ⚙️ **Backend**
+- 🟩 **Node.js + Express.js** — servidor REST API  
+- 🐘 **PostgreSQL / SQLite** — banco de dados relacional  
+- 🛠️ **pg** — conexão e queries SQL  
+- 🔄 **CORS e dotenv** — controle de segurança e variáveis de ambiente  
 
 ---
 
-## 📁 Estrutura do Projeto
+## 🧠 Funcionalidades Principais
 
-📦 refund-system
-├── 📁 api
-│ ├── server.js
-│ ├── 📁 config
-│ ├── 📁 controllers
-│ ├── 📁 models
-│ └── 📁 routes
-│
-└── 📁 refund-mobile
-├── App.tsx
-├── 📁 assets
-├── 📁 components
-├── 📁 screens
-└── 📁 services
-
+✅ Listagem de todas as solicitações de reembolso  
+✅ Cadastro de novas solicitações com nome, valor, categoria e comprovante  
+✅ Exclusão de solicitações  
+✅ Visualização de detalhes da solicitação  
+✅ Upload e download de comprovantes  
+✅ Exibição da categoria diretamente na tabela  
+✅ Integração total com a API Node.js (porta padrão: `3000`)
 
 ---
 
-## ⚙️ Como Rodar o Projeto
+## ⚙️ Estrutura de Pastas
 
-### 🧩 1. Clonar o repositório
 ```bash
-git clone https://github.com/seuusuario/refund-system.git
-cd refund-system
+📂 refund-web
+├── 📁 src
+│   ├── 📁 components        # Componentes reutilizáveis (botões, cards, modais etc)
+│   ├── 📁 pages             # Páginas principais (Home, Detalhes, Nova Solicitação)
+│   ├── 📁 services          # Configuração do Axios e comunicação com a API
+│   ├── 📁 assets            # Ícones, imagens e arquivos estáticos
+│   ├── App.jsx              # Componente principal do app
+│   └── main.jsx             # Ponto de entrada da aplicação
+├── 📄 package.json
+├── 📄 README.md
+└── 📄 .env
+````
+🧩 Instalação e Execução
 
-```
+🔧 1. Clonar o repositório
+```bash 
+git clone https://github.com/seu-usuario/refund-web.git
+cd refund-web
+````
+💅 Preview do Sistema
+
+🖼️ Tela inicial: listagem de solicitações
+🖼️ Modal: criação de nova solicitação com upload
+🖼️ Detalhes: comprovante e status da solicitação
+
 
 Desenvolvido por Júlio César👨‍💻
 
@@ -81,4 +76,4 @@ Desenvolvido por Júlio César👨‍💻
 🧾 Licença
 
 Este projeto está sob a licença MIT.
-Sinta-se livre para usar, modificar e contribuir! ✨
+Sinta-se livre para usar, modificar e contribuir! 
